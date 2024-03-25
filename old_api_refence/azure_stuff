@@ -1,0 +1,17 @@
+  https://learn.microsoft.com/en-us/training/modules/aks-network-design-azure-container-network-interface/7-exercise-deploy-aks 
+
+  https://learn.microsoft.com/en-us/azure/aks/tutorial-kubernetes-deploy-cluster?tabs=azure-cli
+
+  https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/manage-resource-groups-portal#what-is-a-resource-group
+
+  https://learn.microsoft.com/en-us/azure/aks/faq#why-are-two-resource-groups-created-with-aks
+
+  https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-terraform?tabs=bash 
+
+  https://learn.microsoft.com/en-us/azure/aks/free-standard-pricing-tiers#create-a-new-cluster-and-select-the-pricing-tier 
+
+  hey -c 25 -n 100 -m POST \  -H "Authorization: Basic $CREDS" \  -H "Content-Type: application/json" \  -d '{"app_id":"jupyter-helx-tensorflow-nb", "cpus": ".1", "memory":"1M"}' \  "https://helx-dev.apps.renci.org/api/v1/instances/”
+
+  kubectl get deployments | grep jupyter-lab-* | cut -w -f1 | xargs kubectl delete deployments
+
+  CREDS="$(echo -n $NAME:$PASSWORD | base64) 

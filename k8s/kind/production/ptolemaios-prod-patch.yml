@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ptolemaios
+  namespace: helx
+spec:
+  template:
+    spec:
+      containers:
+      - name: ptolemaios
+        resources:
+          limits:
+            cpu: "2000m" # Up to 2 full cores
+            memory: "4Gi"
+          requests:
+            cpu: "1000m" # Use 1 full cores
+            memory: "2Gi"

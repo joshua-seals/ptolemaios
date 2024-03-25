@@ -1,0 +1,43 @@
+
+Users List
+
+UsersViewSet - ViewSet for managing user information.
+
+This ViewSet provides endpoints to retrieve details of the currently logged-in user
+and to handle user logout.
+
+Endpoints:
+- List User Details:
+- URL: /users/
+- HTTP Method: GET
+- Method: list
+- Description: Provides details of the currently logged-in user, including their
+username and access token. This endpoint is designed to support
+scenarios where a reverse proxy (like nginx) performs authentication
+before proxying a request.
+
+- Logout:
+- URL: /users/logout/
+- HTTP Method: POST
+- Method: logout
+- Description: Logs out the current user and returns a success message.
+
+Note:
+- The ViewSet uses a private method '_get_access_token' to retrieve the user's
+access token from the session.
+- 'EmptySerializer' is used for the 'logout' action, likely to simply validate the
+request without any specific data.
+
+GET /api/v1/users/
+
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+
+{
+    "REMOTE_USER": "admin",
+    "ACCESS_TOKEN": null,
+    "SESSION_TIMEOUT": 2592000
+}
+

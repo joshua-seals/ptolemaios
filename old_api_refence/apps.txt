@@ -1,0 +1,81 @@
+
+
+AppViewSet - ViewSet for managing Tycho apps.
+
+This ViewSet provides endpoints to list all available apps and retrieve details
+about a specific app based on its app_id.
+
+Endpoints:
+- List All Apps:
+- URL: /apps/
+- HTTP Method: GET
+- Method: list
+- Description: Lists all available apps, parses resource specifications,
+and returns them in a structured format. GPU reservations
+and limits are specially handled. Any errors during the
+parsing of an app's data are logged and the app is skipped.
+
+- Retrieve App Details:
+- URL: /apps/{app_id}/
+- HTTP Method: GET
+- Method: retrieve
+- Description: Provides detailed information about a specific app based on its
+app_id. Similar to the list method, it parses resource specifications
+and returns them in a structured format.
+
+Note:
+- The app_id is used as a lookup field.
+- The ViewSet interacts with an external system named 'tycho' to fetch app definitions
+and other relevant data. There are also utility functions like 'parse_spec_resources'
+and 'search_for_gpu_reservation' that are presumably defined elsewhere in the codebase.
+
+GET /api/v1/apps/
+
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+
+{
+    "filebrowser": {
+        "name": "File Browser",
+        "app_id": "filebrowser",
+        "description": "File Browser - a utility for browsing files through a web interface",
+        "detail": "File Browser provides a web interface for browsing files in a cloud environment.",
+        "docs": "https://filebrowser.org/",
+        "spec": "https://github.com/helxplatform/helx-apps/raw/helx-dev/app-specs/filebrowser/docker-compose.yaml",
+        "count": 1,
+        "minimum_resources": {
+            "cpus": ".5",
+            "gpus": 0,
+            "memory": "256M",
+            "ephemeralStorage": 0
+        },
+        "maximum_resources": {
+            "cpus": "2",
+            "gpus": 0,
+            "memory": "2048M",
+            "ephemeralStorage": 0
+        }
+    },
+    "jupyter-helx-tensorflow-nb": {
+        "name": "Jupyter HeLx Tensorflow Notebook",
+        "app_id": "jupyter-helx-tensorflow-nb",
+        "description": "Based on the Jupyter SciPy Notebook.",
+        "detail": "Includes popular packages from the scientific Python ecosystem.  In addition to the Python packages normally installed in the SciPy image, tensorflow, keras, pytorch, nibabel and mlxtend are also installed.",
+        "docs": "https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#jupyter-scipy-notebook",
+        "spec": "https://github.com/helxplatform/helx-apps/raw/helx-dev/app-specs/jupyter-helx-tensorflow-nb/docker-compose.yaml",
+        "count": 1,
+        "minimum_resources": {
+            "cpus": ".5",
+            "gpus": "0",
+            "memory": "250M",
+            "ephemeralStorage": "128Mi"
+        },
+        "maximum_resources": {
+            "cpus": "2",
+            "gpus": "1",
+            "memory": "4096M",
+            "ephemeralStorage": "512Mi"
+        }
+    }

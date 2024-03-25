@@ -1,0 +1,32 @@
+# Details on Apps 
+
+/api/v1/apps/
+    GET /api/v1/apps/ - List all Apps
+    GET /api/v1/apps/:app_id/ - Get specific app details
+
+# Details on login Provider Information    
+/api/v1/providers/
+    GET /api/v1/providers/ - List all available auth/login providers.
+
+# App Instance Management
+/api/v1/instances/
+    GET /api/v1/instances/ - Get a list of instances
+    POST /api/v1/instances/ - Create new instance
+    GET /api/v1/instances/:sid - Get specific instance by sid 
+    DELETE /api/v1/instances/:sid - Delete a specific instance 
+    PATCH /api/v1/instances/:sid - partial update of instance 
+    GET /api/v1/instances/:sid/is_ready/
+
+# Management of user information.
+/api/v1/users/
+    GET /api/v1/users/ - Provides details of logged in users.
+    This endpoint is designed to support
+        scenarios where a reverse proxy (like nginx) performs authentication
+        before proxying a request.
+
+    POST /api/v1/users/logout/ - Logs out current user returning success message.
+        Uses private method to retrieve user's access token from session.
+
+# Setting information for brand of deployment
+/api/v1/context/
+    GET /api/v1/context/ - Return django appstore/settings info.
