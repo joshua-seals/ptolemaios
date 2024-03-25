@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: helx
+--- 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ptolemaios
+  name: ptolemaios
+  namespace: helx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ptolemaios
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: ptolemaios
+    spec:
+      dnsPolicy: ClusterFirstWithHostNet
+      hostNetwork: true
+      # Here we use admin tooling to seed database
+      initContainers:
+      - name: migrate-database
+        image: ptolemaios:0.0.1
+        command: ['./migrations']
+      containers:
+      - image: ptolemaios:0.0.1
+        name: ptolemaios
+        ports:
+        - containerPort: 8585
+        resources:
+          limits:
+            cpu: "500m" # Up to half a core
+            memory: "2Gi"
+          requests:
+            cpu: "250m" # Use 1/4th a core
+            memory: "1Gi"
+status: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ptolemaios
+  name: ptolemaios
+  namespace: helx
+spec:
+  ports:
+  - port: 8585
+  selector:
+    app: ptolemaios
+status:
+  loadBalancer: {}

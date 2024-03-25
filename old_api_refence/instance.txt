@@ -1,0 +1,63 @@
+
+Instance List
+
+InstanceViewSet - ViewSet for managing instances.
+
+Endpoints:
+- List Endpoint:
+- URL: /instances/
+- HTTP Method: GET
+- Method: list
+
+- Create Endpoint:
+- URL: /instances/
+- HTTP Method: POST
+- Method: create
+
+- Retrieve (Detail) Endpoint:
+- URL: /instances/{sid}/
+- HTTP Method: GET
+- Method: retrieve
+- Note: {sid} is a placeholder for the instance's ID.
+
+- Destroy (Delete) Endpoint:
+- URL: /instances/{sid}/
+- HTTP Method: DELETE
+- Method: destroy
+
+- Partial Update Endpoint:
+- URL: /instances/{sid}/
+- HTTP Method: PATCH
+- Method: partial_update
+
+- Check Instance Readiness:
+- URL: /instances/{sid}/is_ready/
+- HTTP Method: GET
+- Method: is_ready
+- Description: Checks if a specific user instance, identified by its 'sid', is ready.
+
+GET /api/v1/instances/
+
+HTTP 200 OK
+Allow: GET, POST, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+
+[
+    {
+        "name": "File Browser",
+        "docs": "https://filebrowser.org/",
+        "aid": "filebrowser",
+        "sid": "8cdbc8626b4c424cac5188d511301140",
+        "fqsid": "filebrowser",
+        "workspace_name": "filebrowser",
+        "creation_time": "11-29-2023 14:30:4",
+        "cpus": 500.0,
+        "gpus": 0,
+        "memory": "0.256",
+        "ephemeralStorage": "0",
+        "url": "https://helx-dev.apps.renci.org/private/filebrowser/admin/8cdbc8626b4c424cac5188d511301140/",
+        "status": "ready"
+    }
+]
+

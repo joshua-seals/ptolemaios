@@ -1,0 +1,51 @@
+
+App Context List
+
+AppContextViewSet - ViewSet for retrieving brand/product configuration information.
+
+This ViewSet provides information about the brand or product's configuration settings.
+It fetches the settings from the global `settings` object and serializes them using
+the `AppContextSerializer`.
+
+Attributes:
+- permission_classes: Allow any user (authenticated or not) to access this endpoint.
+- serializer_class: Uses `AppContextSerializer` to serialize the data.
+
+Methods:
+- get_queryset: Returns the global `settings` object.
+- list: Fetches specific configuration settings from the `settings` object,
+combines them with specific environment variables from `EXPORTABLE_ENV`,
+and returns the aggregated data.
+
+Endpoints:
+- List Brand/Product Configuration:
+- URL: /context/
+- HTTP Method: GET
+- Method: list
+- Description: Lists specific configuration settings related to the brand or product
+and certain environment variables specified in `EXPORTABLE_ENV`.
+
+GET /api/v1/context/
+
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+
+{
+    "brand": "helx",
+    "title": "HeLx",
+    "logo_url": "/static/images/helx/logo.png",
+    "color_scheme": {
+        "primary": "#8a5a91",
+        "secondary": "#505057"
+    },
+    "links": null,
+    "capabilities": [
+        "app",
+        "search"
+    ],
+    "dockstore_app_specs_dir_url": "https://github.com/helxplatform/helx-apps/raw/helx-dev/app-specs",
+    "env": {}
+}
+

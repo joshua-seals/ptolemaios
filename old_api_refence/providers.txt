@@ -1,0 +1,50 @@
+
+Login Provider List
+
+LoginProviderViewSet - ViewSet for retrieving login provider information.
+
+This ViewSet provides information about the available social login providers
+from `allauth`, Django's default login, and any product-specific providers like SSO.
+It's designed to list out these available authentication providers and their
+respective login URLs.
+
+Attributes:
+- permission_classes: Allow any user (authenticated or not) to access this endpoint.
+- serializer_class: Uses `LoginProviderSerializer` to serialize the data.
+
+Methods:
+- get_queryset: Returns the global `settings` object.
+- _get_social_providers: A private method to retrieve social login providers
+from `allauth`.
+- _get_django_provider: A private method to check if Django's default login
+is enabled and to get its login URL.
+- _get_product_providers: A private method to check for any product-specific
+SSO providers and retrieve their details.
+- _get_login_providers: An aggregation method that combines the results
+from the above three methods to get a comprehensive
+list of login providers.
+- list: The main endpoint which uses `_get_login_providers` to fetch all
+available login providers and returns them after serialization.
+
+Endpoints:
+- List Login Providers:
+- URL: /providers/
+- HTTP Method: GET
+- Method: list
+- Description: Lists all available authentication/login providers
+and their respective login URLs.
+
+GET /api/v1/providers/
+
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+
+[
+    {
+        "name": "UNC Chapel Hill Single Sign-On",
+        "url": "/accounts/saml"
+    }
+]
+
