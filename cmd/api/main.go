@@ -1,17 +1,14 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log/slog"
 	"net/http"
 	"os"
 	"time"
 
-	"github.com/alexedwards/scs/pgxstore"
-	"github.com/alexedwards/scs/v2"
-	"github.com/jackc/pgx/v5/pgxpool"
 	v1 "github.com/joshua-seals/ptolemaios/cmd/api/handlers/v1"
+	"github.com/joshua-seals/ptolemaios/internal/core"
 )
 
 type config struct {
@@ -44,7 +41,7 @@ func main() {
 
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
-	db, err := openDB(cfg)
+	db, err := core.OpenDB(cfg.db.dsn)
 	if err != nil {
 		logger.Error(err.Error())
 		os.Exit(1)
@@ -54,9 +51,7 @@ func main() {
 	// Initialize a new session manager.
 	// Adjust the Lifetime here to create
 	// shorter or longer sessions as needed.
-	sessionManager := scs.New()
-	sessionManager.Store = pgxstore.New(db)
-	sessionManager.Lifetime = 1 * time.Hour
+	sessionManager := core.NewSessionManager(db)
 
 	core := v1.New(logger, sessionManager, db)
 	app := &application{
@@ -79,14 +74,4 @@ func main() {
 	logger.Error(err.Error())
 	os.Exit(1)
 
-}
-
-func openDB(cfg config) (*pgxpool.Pool, error) {
-
-	pool, err := pgxpool.New(context.Background(), cfg.db.dsn)
-	if err != nil {
-		return nil, err
-	}
-
-	return pool, nil
 }
