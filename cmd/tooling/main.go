@@ -6,7 +6,7 @@ import (
 	"os"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
-	"github.com/joshua-seals/ptolemaios/internal/schema"
+	"github.com/joshua-seals/ptolemaios/internal/data/schema"
 )
 
 // This tool is used to seed the database
