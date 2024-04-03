@@ -33,9 +33,9 @@ RUN addgroup -g 1000 -S ptolemy && \
     adduser -u 1000 -G ptolemy -S ptolemy
 
 # Copy application binary from builder image
-COPY --from=builder --chown=api-user:ptolemy /ptolemaios/cmd/api/ptolemaios /helx/ptolemaios
+COPY --from=builder --chown=ptolemy:ptolemy /ptolemaios/cmd/api/ptolemaios /helx/ptolemaios
 # COPY --from=builder --chown=api-user:api-user /ptolemaios/cmd/ui /helx/ui
-COPY --from=builder --chown=api-user:ptolemy /ptolemaios/cmd/tooling/migrations /helx/migrations
+COPY --from=builder --chown=ptolemy:ptolemy /ptolemaios/cmd/tooling/migrations /helx/migrations
 
 USER ptolemy
 WORKDIR /helx

@@ -19,14 +19,14 @@ func secureHeaders(next http.Handler) http.Handler {
 	})
 }
 
-func (c *CoreHandler) logRequest(next http.Handler) http.Handler {
+func (c *Mux) logRequest(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		c.logger.Info("requested endpoint", r.RemoteAddr, r.Proto, r.Method, r.URL.RequestURI())
 		next.ServeHTTP(w, r)
 	})
 }
 
-func (c *CoreHandler) recoverPanic(next http.Handler) http.Handler {
+func (c *Mux) recoverPanic(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// This function will always be called when the stack
 		// is unwound following a panic

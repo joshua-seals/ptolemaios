@@ -1,12 +1,13 @@
 package v1
 
 import (
+	"expvar"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
 )
 
-func (c *CoreHandler) Routes() http.Handler {
+func (c *Mux) Routes() http.Handler {
 	router := httprouter.New()
 
 	router.HandlerFunc(http.MethodGet, "/api/v1/apps/", c.listApps)
@@ -25,6 +26,8 @@ func (c *CoreHandler) Routes() http.Handler {
 	// Uses private method to retrieve user's access token from session.
 	router.HandlerFunc(http.MethodPost, "/api/v1/users/logout/", c.userLogout)
 	router.HandlerFunc(http.MethodGet, "/api/v1/context/", c.helxContext)
+
+	router.Handler(http.MethodGet, "/api/v1/metrics", expvar.Handler())
 
 	// Wrap the middleware around router so we run before ServeMux accesses.
 	return c.recoverPanic(c.logRequest(secureHeaders(router)))
