@@ -1,12 +1,14 @@
 ## Variables
 BUILD_REF := develop
-APIPORT := 8585 # Will also need manual changes in k8s manifests
-DBPORT := 5432  # Will also need manual changes in k8s manifests
+# Manual changes to k8s required
+APIPORT := 8585
+DBPORT := 5432
+# End manual changes to k8s
 VERSION := 0.0.1
 ADMIN_PASSWD := "p@5fjaskdl45fadkfjl"
 BUILD_DATE := `date -u +"%Y-%m-%dT%H:%M:%SZ"`
-# ADMIN_PASSWD := 'password123$$' # In make dollar signs must be escaped. $$ = $ for this string.
-DB_DSN := "postgres://postgres:pa55word123@localhost:5432/postgres?sslmode=disable"
+# DB_DSN := "postgres://postgres:pa55word123@localhost:5432/postgres?sslmode=disable"
+DB_DSN := "postgres://postgres:pa55word123@database.helx.svc.cluster.local:5432/postgres?sslmode=disable"
 BASE_IMAGE := ptolemaios
 IMAGE_TAG := $(BASE_IMAGE):$(VERSION)
 KIND_CLUSTER := ptolemaios-cluser
@@ -85,9 +87,9 @@ kind-load:
 # Development Mode: Apply kubernetes manifests in k8s/base directory
 # Deploy the application and supporting k8s infrastructure into KiND.
 kind-apply:
-	kustomize build k8s/base/database | kubectl apply -f -
+	kustomize build k8s/kind/dev/database | kubectl apply -f -
 	kubectl wait --namespace=helx --timeout=120s --for=condition=Available deployment/database
-	kustomize build k8s/base/ptolemaios | kubectl apply -f - 
+	kustomize build k8s/kind/dev/ptolemaios | kubectl apply -f - 
 
 
 # For production deployments. This increases cpu and memory usage of ptolemaios.
@@ -121,6 +123,33 @@ kind-logs:
 kind-down:
 	kind delete cluster --name $(KIND_CLUSTER)
 
+# Service Mesh
+# Install linkerd crds, vizualization dashboard and run check
+linkerd-up:
+	linkerd install --crds | kubectl apply -f -
+	linkerd install | kubectl apply -f -
+	linkerd check
+
+linkerd-inject:
+	kubectl get -n helx deploy -o yaml \
+  | linkerd inject --opaque-ports 5432 - \
+  | kubectl apply -f -
+
+linkerd-dash-up:
+	linkerd viz install | kubectl apply -f -
+
+linkerd-dash-view:
+	linkerd viz dashboard &
+
+# In other deployments, ambassador is used for api-gateway capability
+# however this is really just a kubernetes-sigs (via Envoy Api-Gateway)
+# capability. So instead, we use nginx-gateway-fabric to direct L7
+# traffic and do rewrites. 
+nginx-gateway-fabric-up:
+	kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/standard-install.yaml
+	kubectl apply -f https://github.com/nginxinc/nginx-gateway-fabric/releases/download/v1.2.0/crds.yaml
+  kubectl apply -f https://github.com/nginxinc/nginx-gateway-fabric/releases/download/v1.2.0/nginx-gateway.yaml
+
 # ==============================================================================
 # Load Testing
 #
@@ -135,7 +164,7 @@ kind-down:
 # 
 # Issue HTTP GET request 10,000 times across 100 concurrent workloads.
 load-test:
-	hey -m GET -c 100 -n 10000 http://localhost:8585/ptolemaios
+	hey -m GET -c 100 -n 10000 http://localhost:$(APIPORT)/api/v1/apps/
 
 # Load Test Example output: 
 # 	Summary:
@@ -180,4 +209,14 @@ load-test:
 
 # Status code distribution:
 #   [200]	10000 responses
-#  END SAMPLE OUTPUT 
+###############  END SAMPLE OUTPUT ###################
+# ADMINISTRATION
+############## Obtaining Auth Token ##################
+# For some routes you must have an admin auth token
+# currently to obtain token, follow the below curl command
+# This assumes default's are used. 
+# NOTE: If a whitespace is after APIPORT, curl will fail here.
+auth-token:
+	curl -XPOST localhost:$(APIPORT)/auth -d '{"email":"admin@renci.org", "password":$(ADMIN_PASSWD)}'
+
+

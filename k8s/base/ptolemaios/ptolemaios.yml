@@ -21,13 +21,13 @@ spec:
       labels:
         app: ptolemaios
     spec:
-      dnsPolicy: ClusterFirstWithHostNet
-      hostNetwork: true
       # Here we use admin tooling to seed database
       initContainers:
       - name: migrate-database
         image: ptolemaios:0.0.1
         command: ['./migrations']
+        # command: ['/bin/sleep']
+        # args: ['infinity']
       containers:
       - image: ptolemaios:0.0.1
         name: ptolemaios
@@ -52,8 +52,11 @@ metadata:
   namespace: helx
 spec:
   ports:
-  - port: 8585
+  - port: 80
+    targetPort: 8585
+    protocol: TCP
+    name: ptolemaios
   selector:
     app: ptolemaios
-status:
-  loadBalancer: {}
+# status:
+#   loadBalancer: {}

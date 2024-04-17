@@ -9,7 +9,7 @@ metadata:
   name: db-config
   namespace: helx
 data:
-  db_password: p@55word123
+  db_password: pa55word123
 
 ---
 apiVersion: apps/v1
@@ -30,8 +30,6 @@ spec:
       labels:
         app: database
     spec:
-      dnsPolicy: ClusterFirstWithHostNet
-      hostNetwork: true
       containers:
       - name: postgres
         image: postgres:13-alpine

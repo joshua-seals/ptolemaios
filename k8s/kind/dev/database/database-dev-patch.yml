@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: database
+  namespace: helx
+spec:
+  template:
+    spec:
+    # Linkerd will not work with this dns policy
+      dnsPolicy: ClusterFirstWithHostNet
+      hostNetwork: true

@@ -4,12 +4,12 @@ import (
 	"net/http"
 )
 
-func (c *Mux) listApps(w http.ResponseWriter, r *http.Request) {
-	c.logger.Info("Listing Apps")
+func (m *Mux) listApps(w http.ResponseWriter, r *http.Request) {
+	m.logger.Info("Listing Apps")
 	panic("whoops")
 
 }
 
-func (c *Mux) appDetails(w http.ResponseWriter, r *http.Request) {
-	c.logger.Info("Get app details")
+func (m *Mux) appDetails(w http.ResponseWriter, r *http.Request) {
+	m.logger.Info("Get app details")
 }

@@ -1,22 +1,24 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"log/slog"
 	"os"
+	"time"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
+	"github.com/joshua-seals/ptolemaios/cmd/tooling/cmd"
 	"github.com/joshua-seals/ptolemaios/internal/data/schema"
 )
 
 // This tool is used to seed the database
 
 func main() {
-	// This allows us to add an initial admin password to the database.
-	// pwd := os.Getenv("ADMIN_PASSWD")
-
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
+	// This allows us to add an initial admin password to the database.
+	pwd := os.Getenv("ADMIN_PASSWD")
 	// The Darwin lib reqiures that pgx follow database/sql interfaces.
 	db_dsn := os.Getenv("DB_DSN")
 	db, err := sql.Open("pgx", db_dsn)
@@ -59,34 +61,34 @@ func main() {
 	// }
 	// logger.Info("Seed Complete")
 
-	// // Generate an admin password hash
-	// // here we use 'password123$' as default
-	// hash, err := cmd.CreateAdminPassword(pwd)
-	// if err != nil {
-	// 	logger.Error(err.Error())
-	// 	os.Exit(1)
-	// }
-	// // here we create an annonymous struct
-	// admin := struct {
-	// 	name  string
-	// 	email string
-	// 	hash  []byte
-	// }{
-	// 	name:  "admin",
-	// 	email: "admin@renci.org",
-	// 	hash:  hash,
-	// }
+	// Generate an admin password hash
+	// here we use pwd from ADMIN_PASSWD in Makefile.
+	hash, err := cmd.CreateAdminPassword(pwd)
+	if err != nil {
+		logger.Error(err.Error())
+		os.Exit(1)
+	}
+	// here we create an annonymous struct
+	admin := struct {
+		name  string
+		email string
+		hash  []byte
+	}{
+		name:  "admin",
+		email: "admin@renci.org",
+		hash:  hash,
+	}
 
-	// // Hard coded and in need of some love at a later date.
-	// adminSeed := `INSERT into users (name, email, password_hash) VALUES
-	//   ($1,$2,$3);`
+	// Hard coded and in need of some love at a later date.
+	adminSeed := `INSERT into users (name, email, password_hash) VALUES
+	  ($1,$2,$3);`
 
-	// ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	// defer cancel()
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
 
-	// _, err = db.ExecContext(ctx, adminSeed, admin.name, admin.email, admin.hash)
-	// if err != nil {
-	// 	logger.Error(err.Error())
-	// 	os.Exit(1)
-	// }
+	_, err = db.ExecContext(ctx, adminSeed, admin.name, admin.email, admin.hash)
+	if err != nil {
+		logger.Error(err.Error())
+		os.Exit(1)
+	}
 }
