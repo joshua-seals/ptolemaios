@@ -9,10 +9,13 @@ require (
 	github.com/jackc/pgx/v5 v5.5.5
 	github.com/julienschmidt/httprouter v1.3.0
 	golang.org/x/crypto v0.21.0
+	golang.org/x/oauth2 v0.19.0
 	gopkg.in/src-d/go-git.v4 v4.13.1
 )
 
 require (
+	cloud.google.com/go/compute v1.20.1 // indirect
+	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	github.com/emirpasic/gods v1.12.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
