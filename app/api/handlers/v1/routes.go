@@ -32,8 +32,9 @@ func (m *Mux) Routes() http.Handler {
 	router.Handler(http.MethodPost, "/admin/auth", http.HandlerFunc(m.createAuthToken))
 	// OauthGoogle
 	// Need to make this more dynamic
-	// router.HandlerFunc("/oauth/google/login", m.oauthGoogleLogin)
-	// router.HandlerFunc("/oauth/google/callback", m.oauthGoogleCallback)
+	router.HandlerFunc(http.MethodGet, "/", m.splashPage)
+	router.HandlerFunc(http.MethodGet, "/login/github/", m.githubLoginHandler)
+	router.HandlerFunc(http.MethodPost, "/login/github/callback/", m.githubCallbackHandler)
 
 	// Add privileged CRUD items that require auth token
 	// These will be to add applications to Workstation-Database
@@ -42,7 +43,7 @@ func (m *Mux) Routes() http.Handler {
 	// router.Handler(http.MethodDelete, "/app/:id", m.authenticate(http.HandlerFunc(m.deleteApp)))
 	// router.Handler(http.MethodPatch, "/app/:id", m.authenticate(http.HandlerFunc(m.updateApp)))
 
-	router.Handler(http.MethodGet, "/api/v1/metrics", expvar.Handler())
+	router.Handler(http.MethodGet, "/api/v1/metrics", m.authenticate(expvar.Handler()))
 
 	// Wrap the middleware around router so we run before ServeMux accesses.
 	return m.recoverPanic(m.logRequest(secureHeaders(router)))

@@ -3,12 +3,18 @@ BUILD_REF := develop
 # Manual changes to k8s required
 APIPORT := 8585
 DBPORT := 5432
+# oauth - here we assume client_secret/id are exported in your shell.
+# export CLIENT_ID="fjadfkd;fadf;adsf" for example in .bashrc
+# This is best suited for k8s deployment in production scenario.
+CLIENT_SECRET :=${CLIENT_SECRET}
+CLIENT_ID :=${CLIENT_ID}
+REDIRECT_URL := localhost:${APIPORT}/login/github/callback/
 # End manual changes to k8s
 VERSION := 0.0.1
 ADMIN_PASSWD := "p@5fjaskdl45fadkfjl"
 BUILD_DATE := `date -u +"%Y-%m-%dT%H:%M:%SZ"`
-# DB_DSN := "postgres://postgres:pa55word123@localhost:5432/postgres?sslmode=disable"
-DB_DSN := "postgres://postgres:pa55word123@database.helx.svc.cluster.local:5432/postgres?sslmode=disable"
+# DB_DSN := "postgres://postgres:pa55word123@database.helx.svc.cluster.local:5432/postgres?sslmode=disable"
+DB_DSN := "postgres://postgres:pa55word123@database:5432/postgres?sslmode=disable"
 BASE_IMAGE := ptolemaios
 IMAGE_TAG := $(BASE_IMAGE):$(VERSION)
 KIND_CLUSTER := ptolemaios-cluser
@@ -64,6 +70,8 @@ build:
 	--build-arg=DB_DSN=$(DB_DSN) \
 	--build-arg=ADMIN_PASSWD=$(ADMIN_PASSWD) \
 	--build-arg=BUILD_DATE=$(BUILD_DATE) \
+	--build-arg=CLIENT_ID=$(CLIENT_ID) \
+	--build-arg=CLIENT_SECRET=$(CLIENT_SECRET) \
 	--tag=$(IMAGE_TAG) \
 	.
 # ==============================================================================

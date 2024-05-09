@@ -8,7 +8,7 @@ import (
 	"time"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
-	"github.com/joshua-seals/ptolemaios/cmd/tooling/cmd"
+	"github.com/joshua-seals/ptolemaios/app/tooling/cmd"
 	"github.com/joshua-seals/ptolemaios/internal/data/schema"
 )
 

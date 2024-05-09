@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	v1 "github.com/joshua-seals/ptolemaios/cmd/api/handlers/v1"
+	v1 "github.com/joshua-seals/ptolemaios/app/api/handlers/v1"
 	"github.com/joshua-seals/ptolemaios/internal/core"
 )
 
@@ -22,11 +22,13 @@ func main() {
 	cfg := core.NewConfig()
 	logger := core.NewLogger(os.Stdout)
 
+	// ** Remove this and support database
+	// app functionality
 	// clone helx-apps
-	err := core.CloneBranch(cfg.AppUrl, cfg.AppBranch)
-	if err != nil {
-		logger.Error(err.Error())
-	}
+	// err := core.CloneBranch(cfg.AppUrl, cfg.AppBranch)
+	// if err != nil {
+	// 	logger.Error(err.Error())
+	// }
 
 	db, err := core.OpenDB(cfg.Db.Dsn)
 	if err != nil {

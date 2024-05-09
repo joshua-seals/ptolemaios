@@ -9,12 +9,12 @@ type Db struct {
 
 // Add new configs here
 type Config struct {
-	Port      string
-	Env       string
-	Version   string
-	Db        Db
-	AppBranch string
-	AppUrl    string
+	Port    string
+	Env     string
+	Version string
+	Db      Db
+	// AppBranch string
+	// AppUrl    string
 }
 
 // With NewConfig expect ENV variables passed from Makefile
@@ -32,14 +32,15 @@ func NewConfig() *Config {
 		},
 		// Ideally these are also settable after the server is up
 		// via some api as well.
-		AppBranch: getEnv("APP-BRANCH", "edu720-azure"),
-		AppUrl:    getEnv("APP-URL", "https://github.com/helxplatform/helx-apps"),
+		// AppBranch: getEnv("APP-BRANCH", "edu720-azure"),
+		// AppUrl:    getEnv("APP-URL", "https://github.com/helxplatform/helx-apps"),
 	}
 }
 
 // Help set default values
 func getEnv(key, defaultValue string) string {
-	if v := os.Getenv(key); v != "" {
+	// if v := os.Getenv(key); v != "" {
+	if v, exists := os.LookupEnv(key); !exists {
 		return v
 	}
 	return defaultValue

@@ -1,6 +1,8 @@
 package core
 
-import "golang.org/x/oauth2"
+import (
+	"golang.org/x/oauth2"
+)
 
 // Mainly OAuth2 Centers around the client config
 // Ref: https://pkg.go.dev/golang.org/x/oauth2@v0.19.0#Config
@@ -21,16 +23,18 @@ const (
 	Github
 )
 
-const oauthGoogleUrlAPI = "https://www.googleapis.com/oauth2/v2/userinfo?access_token="
-
-func NewOauthConfig() *oauth2.Config {
-	var c oauth2.Config
-	c.ClientID = getEnv("CLIENT_ID", "blah")
-	c.ClientSecret = getEnv("CLIENT_SECRET", "")
-	// c.Endpoint = getEnv("ENDPOINTS", "")
-	c.RedirectURL = getEnv("REDIRECT_URL", "")
-	// c.Scopes = getEnv("SCOPES", "")
-	return &c
+// Default to github
+func NewGithubOauthConfig() *oauth2.Config {
+	return &oauth2.Config{
+		ClientID:     getEnv("CLIENT_ID", "blah"),
+		ClientSecret: getEnv("CLIENT_SECRET", ""),
+		Scopes:       []string{"user", "user:email"},
+		RedirectURL:  getEnv("REDIRECT_URL", "/login/github/callback/"),
+		Endpoint: oauth2.Endpoint{
+			TokenURL: "github.com/login/oauth/access_token",
+			AuthURL:  "github.com/login/oauth/authorize",
+		},
+	}
 }
 
 // Ref: https://sharmarajdaksh.github.io/blog/github-oauth-with-go
