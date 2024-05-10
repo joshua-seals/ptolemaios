@@ -8,7 +8,7 @@ DBPORT := 5432
 # This is best suited for k8s deployment in production scenario.
 CLIENT_SECRET :=${CLIENT_SECRET}
 CLIENT_ID :=${CLIENT_ID}
-REDIRECT_URL := localhost:${APIPORT}/login/github/callback/
+REDIRECT_URL := http://localhost:${APIPORT}/login/github/callback/
 # End manual changes to k8s
 VERSION := 0.0.1
 ADMIN_PASSWD := "p@5fjaskdl45fadkfjl"

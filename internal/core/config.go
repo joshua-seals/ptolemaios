@@ -25,7 +25,7 @@ type Config struct {
 func NewConfig() *Config {
 	return &Config{
 		Env:     getEnv("BUILD_REF", "Develop"),
-		Port:    getEnv("APIPORT", "8080"),
+		Port:    getEnv("APIPORT", "8585"),
 		Version: getEnv("VERSION", "1.0"),
 		Db: Db{
 			Dsn: getEnv("DB_DSN", "postgres://postgres:pa55word123@localhost:5432/postgres?sslmode=disable"),
@@ -40,7 +40,7 @@ func NewConfig() *Config {
 // Help set default values
 func getEnv(key, defaultValue string) string {
 	// if v := os.Getenv(key); v != "" {
-	if v, exists := os.LookupEnv(key); !exists {
+	if v, exists := os.LookupEnv(key); exists {
 		return v
 	}
 	return defaultValue

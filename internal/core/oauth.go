@@ -28,11 +28,11 @@ func NewGithubOauthConfig() *oauth2.Config {
 	return &oauth2.Config{
 		ClientID:     getEnv("CLIENT_ID", "blah"),
 		ClientSecret: getEnv("CLIENT_SECRET", ""),
-		Scopes:       []string{"user", "user:email"},
-		RedirectURL:  getEnv("REDIRECT_URL", "/login/github/callback/"),
+		Scopes:       []string{"user:email"},
+		RedirectURL:  getEnv("REDIRECT_URL", "http://localhost:8585/login/github/callback/"),
 		Endpoint: oauth2.Endpoint{
-			TokenURL: "github.com/login/oauth/access_token",
-			AuthURL:  "github.com/login/oauth/authorize",
+			TokenURL: "https://github.com/login/oauth/access_token",
+			AuthURL:  "https://github.com/login/oauth/authorize",
 		},
 	}
 }
