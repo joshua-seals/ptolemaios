@@ -39,7 +39,6 @@ func NewConfig() *Config {
 
 // Help set default values
 func getEnv(key, defaultValue string) string {
-	// if v := os.Getenv(key); v != "" {
 	if v, exists := os.LookupEnv(key); exists {
 		return v
 	}

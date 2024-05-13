@@ -47,7 +47,7 @@ func (m *Mux) splashPage(w http.ResponseWriter, r *http.Request) {
 
 func (m *Mux) githubLoginHandler(w http.ResponseWriter, r *http.Request) {
 	// Get the environment variable
-	conf := core.NewGithubOauthConfig()
+	conf := core.NewOauthConfig(core.Github)
 
 	// Create the dynamic redirect URL for login
 	redirectURL := fmt.Sprintf(
@@ -68,7 +68,7 @@ func (m *Mux) githubCallbackHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func getGithubAccessToken(code string) string {
-	conf := core.NewGithubOauthConfig()
+	conf := core.NewOauthConfig(core.Github)
 	// Set up the request body as JSON
 	requestBodyMap := map[string]string{
 		"client_id":     conf.ClientID,
