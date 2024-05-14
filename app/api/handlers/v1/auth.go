@@ -48,13 +48,13 @@ func (m *Mux) splashPage(w http.ResponseWriter, r *http.Request) {
 func (m *Mux) githubLoginHandler(w http.ResponseWriter, r *http.Request) {
 	// Get the environment variable
 	conf := core.NewOauthConfig(core.Github)
-
+	fmt.Printf("Core: %s", conf.RedirectURL)
 	// Create the dynamic redirect URL for login
 	redirectURL := fmt.Sprintf(
 		"%s?client_id=%s&redirect_uri=%s",
 		conf.Endpoint.AuthURL, conf.ClientID, conf.RedirectURL)
 
-	http.Redirect(w, r, redirectURL, 301)
+	http.Redirect(w, r, redirectURL, http.StatusMovedPermanently)
 }
 
 func (m *Mux) githubCallbackHandler(w http.ResponseWriter, r *http.Request) {

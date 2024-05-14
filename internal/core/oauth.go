@@ -24,7 +24,7 @@ func NewOauthConfig(p Provider) *oauth2.Config {
 			ClientID:     getEnv("CLIENT_ID", "need client ID"),
 			ClientSecret: getEnv("CLIENT_SECRET", "need client secret"),
 			Scopes:       []string{"user:email"},
-			RedirectURL:  getEnv("REDIRECT_URL", "http://localhost:8585/login/oauth2/callback/"),
+			RedirectURL:  getEnv("REDIRECT_URL", "http://127.0.0.1:8585/login/oauth2/callback/"),
 			Endpoint:     github.Endpoint,
 		}
 	case Microsoft:
@@ -32,7 +32,7 @@ func NewOauthConfig(p Provider) *oauth2.Config {
 			ClientID:     getEnv("CLIENT_ID", "need client ID"),
 			ClientSecret: getEnv("CLIENT_SECRET", "need client secret"),
 			Scopes:       []string{"user:email"},
-			RedirectURL:  getEnv("REDIRECT_URL", "http://localhost:8585/login/oauth2/callback/"),
+			RedirectURL:  getEnv("REDIRECT_URL", "http://127.0.0.1:8585/login/oauth2/callback/"),
 			Endpoint:     microsoft.LiveConnectEndpoint,
 		}
 	case Slack:
@@ -40,7 +40,7 @@ func NewOauthConfig(p Provider) *oauth2.Config {
 			ClientID:     getEnv("CLIENT_ID", "need client ID"),
 			ClientSecret: getEnv("CLIENT_SECRET", "need client secret"),
 			Scopes:       []string{"user:email"},
-			RedirectURL:  getEnv("REDIRECT_URL", ""),
+			RedirectURL:  getEnv("REDIRECT_URL", "http://127.0.0.1:8585/login/oauth2/callback/"),
 			Endpoint:     slack.Endpoint,
 		}
 	default:
@@ -49,7 +49,7 @@ func NewOauthConfig(p Provider) *oauth2.Config {
 			ClientID:     getEnv("CLIENT_ID", "need client ID"),
 			ClientSecret: getEnv("CLIENT_SECRET", "need client secret"),
 			Scopes:       []string{"user:email"},
-			RedirectURL:  getEnv("REDIRECT_URL", "http://localhost:8585/login/oauth2/callback/"),
+			RedirectURL:  getEnv("REDIRECT_URL", "http://127.0.0.1:8585/login/oauth2/callback/"),
 			Endpoint:     github.Endpoint,
 		}
 	}

@@ -35,7 +35,7 @@ func (m *Mux) Routes() http.Handler {
 	router.HandlerFunc(http.MethodGet, "/", m.splashPage)
 	router.HandlerFunc(http.MethodGet, "/login/github/", m.githubLoginHandler)
 
-	router.HandlerFunc(http.MethodGet, "/login/oaut2/callback/", m.githubCallbackHandler)
+	router.HandlerFunc(http.MethodGet, "/login/oauth2/callback/", m.githubCallbackHandler)
 
 	// Add privileged CRUD items that require auth token
 	// These will be to add applications to Workstation-Database
